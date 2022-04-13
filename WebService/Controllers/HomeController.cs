@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using WebService.Models;
+using WebService.Models.ViewModels;
 
 namespace WebService.Controllers
 {

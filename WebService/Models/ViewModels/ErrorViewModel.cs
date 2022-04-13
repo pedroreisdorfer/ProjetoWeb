@@ -1,6 +1,6 @@
 using System;
 
-namespace WebService.Models
+namespace WebService.Models.ViewModels //ErrorViewModel é só um modelo auxiliar para povoar as telas
 {
     public class ErrorViewModel
     {

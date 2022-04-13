@@ -56,8 +56,8 @@ namespace WebService
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
+                    template: "{controller=Home}/{action=Index}/{id?}"); // id é opcional, por isso o ponto de interrogação //
+            });                                   // se não digitar nenhuma ação, será ação index
         }
     }
 }
