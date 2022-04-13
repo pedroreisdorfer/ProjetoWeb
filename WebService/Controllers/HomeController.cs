@@ -17,10 +17,11 @@ namespace WebService.Controllers
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Your application description page.";
+            ViewData["Message"] = "Salles Web MVC App from C# Course."; //ViewData é um dictionary do C#, UMA COLEÇÃO DE [] PARES VALOR //
+            ViewData["Aluno"] = "Pedro Vinícius";
 
-            return View();
-        }
+            return View(); // quando um método chama return View(), é o que se chama de method builder, é um método auxiliar que retorna um objeto do tipo "IActionResult"
+        }                  // o que o framework então vai fazer: vai procurar na pasta Views, na subpasta Home, uma página chamada About.cshtml
 
         public IActionResult Contact()
         {

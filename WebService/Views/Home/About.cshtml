@@ -1,7 +1,12 @@
 ﻿@{
-    ViewData["Title"] = "About";
-}
-<h2>@ViewData["Title"]</h2>
+    //dentro do @{} você pode colocar programação C# que você quiser //
+    ViewData["Title"] = "About"; // conta aqui o que terá lá na página About do site que está sendo criado //
+} 
+<h2>@ViewData["Title"]</h2> <!--aqui  está sendo usada a dictionary ViewData-->
 <h3>@ViewData["Message"]</h3>
 
-<p>Use this area to provide additional information.</p>
+<p>Professor @ViewData["Aluno"]</p>
+
+<address>
+    <strong>More information: </strong> <a href="http://educandoweb.com.br">Educandoweb.com.br</a>
+</address>
