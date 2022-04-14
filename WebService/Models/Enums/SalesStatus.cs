@@ -1,4 +1,5 @@
-﻿namespace WebService.Models.Enums
+﻿
+namespace WebService.Models.Enums
 {
     public enum SalesStatus : int
     {

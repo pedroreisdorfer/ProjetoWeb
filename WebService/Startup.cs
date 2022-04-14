@@ -39,14 +39,18 @@ namespace WebService
             services.AddDbContext<WebServiceContext>(options => // aqui está sendo passado o tipo de DbContext da nossa aplicação, que está em Dara: WebService
                     options.UseMySql(Configuration.GetConnectionString("WebServiceContext"), builder =>
                         builder.MigrationsAssembly("WebService")));
+
+            services.AddScoped<SeedingService>(); //registra nosso serviço no gestor de injeção de dependência da nossa aplicação //
+        
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, SeedingService seedingService)   // ele aceita que eu acrescente outros parâmetros nele //
         {
-            if (env.IsDevelopment())
+            if (env.IsDevelopment())   // se eu estiver no perfil de desenvolvimento
             {
                 app.UseDeveloperExceptionPage();
+                seedingService.Seed(); //assim vou popular minha base de dados, caso ela não esteja populada ainda //
             }
             else
             {
