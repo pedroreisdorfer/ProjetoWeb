@@ -36,8 +36,9 @@ namespace WebService
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddDbContext<WebServiceContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("WebServiceContext")));
+            services.AddDbContext<WebServiceContext>(options => // aqui está sendo passado o tipo de DbContext da nossa aplicação, que está em Dara: WebService
+                    options.UseMySql(Configuration.GetConnectionString("WebServiceContext"), builder =>
+                        builder.MigrationsAssembly("WebService")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

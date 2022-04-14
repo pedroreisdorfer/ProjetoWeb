@@ -10,11 +10,11 @@ using WebService.Models;
 
 namespace WebService.Controllers
 {
-    public class DepartmentsController : Controller
+    public class DepartmentsController : Controller // já vem com a classe Controller como prinicipal //
     {
-        private readonly WebServiceContext _context;
+        private readonly WebServiceContext _context; // Controller já vem com dependencia da classes WebServiceContext, que é a classe personalizada do DbContext do Entity Framework
 
-        public DepartmentsController(WebServiceContext context)
+        public DepartmentsController(WebServiceContext context) // contrutor para injeção de dependencia //
         {
             _context = context;
         }
