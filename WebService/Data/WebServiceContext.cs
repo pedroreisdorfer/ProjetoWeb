@@ -14,6 +14,8 @@ namespace WebService.Data
         {
         }
 
-        public DbSet<WebService.Models.Department> Department { get; set; }
+        public DbSet<Department> Department { get; set; }
+        public DbSet<Seller> Seller { get; set; } // para que os Models criados possam ser reconhecidos no meu banco de dados //
+        public DbSet<SalesRecord> SalesRecord { get; set; } // para que os Models criados possam ser reconhecidos no meu banco de dados //
     }
 }
