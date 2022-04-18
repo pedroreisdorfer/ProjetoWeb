@@ -14,7 +14,7 @@ namespace WebService.Controllers
     {
         private readonly WebServiceContext _context; // Controller já vem com dependencia da classes WebServiceContext, que é a classe personalizada do DbContext do Entity Framework
 
-        public DepartmentsController(WebServiceContext context) // contrutor para injeção de dependencia //
+        public DepartmentsController(WebServiceContext context) // construtor para injeção de dependencia //
         {
             _context = context;
         }

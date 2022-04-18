@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebService.Data;
+using WebService.Services;
 
 namespace WebService
 {
@@ -41,7 +42,7 @@ namespace WebService
                         builder.MigrationsAssembly("WebService")));
 
             services.AddScoped<SeedingService>(); //registra nosso serviço no gestor de injeção de dependência da nossa aplicação //
-        
+            services.AddScoped<SellerService>(); // agora essa classe pode ser injetada em outras classes //
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

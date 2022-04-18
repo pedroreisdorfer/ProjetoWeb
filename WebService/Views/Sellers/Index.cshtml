@@ -1,9 +1,64 @@
-﻿
+﻿@model IEnumerable<WebService.Models.Seller>
+    <!--obtendo dados da View e mosntrando list na tela  */-->
+<!--esse objeto model vai corresponder ao objeto passado como arguento no View de SellersController. No caso, é uma lista de seller-->
+
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Sellers";
 }
 
-<h2>Sellers</h2>
+<h2>@ViewData["Title"]</h2>
 
-<p>Sellers index page</p>
+<p>
+    <a asp-action="Create" class="btn btn-default">Create New</a>
+</p>
+
+<table class="table table-striped table-hover">
+    <thead>
+        
+        <tr class="success">
+            <!--para ser a linha do cabeçalho e depois uma class ali para mudar a cor do cabeçalho para verde -->
+            <th>
+                <!--primeira coluna do cabeçalho -->
+                @Html.DisplayNameFor(model => model.Name) <!--pra renderiza o nome da class Seller, uso o recurso esse recurso do Framework-->
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BirthDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BaseSalary)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name) <!--para criação do conteúdo de cada coluna baseado no item de foreach-->
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BirthDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BaseSalary)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> <!--edit no final é o nome que fica lá no site-->
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+
+        }
+    </tbody>
+
+</table>
 

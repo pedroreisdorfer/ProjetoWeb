@@ -9,7 +9,7 @@ namespace WebService.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public ICollection<Seller> Sellers { get; set; } = new List<Seller>(); // isso porque no esquema do programa, diz  com * que são vários vendedores, logo, é preciso de uma coleção.  //
-                                                                               // com essa instanciação, foi implementada a asspciação de Department com Seller //
+                                                                               // com essa instanciação, foi implementada a associação de Department com Seller //
 
         public Department()
         {
