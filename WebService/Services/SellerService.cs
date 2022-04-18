@@ -22,5 +22,11 @@ namespace WebService.Services
                              // acessa minha fonte de dados relacionada a tabela de vendedores e converte para uma lista //
         }
 
+        public void Insert(Seller obj) // método para inserir um novo vendedor no banco de dados //
+        {
+            _conetext.Add(obj);
+            _conetext.SaveChanges();
+        }
+
     }
 }

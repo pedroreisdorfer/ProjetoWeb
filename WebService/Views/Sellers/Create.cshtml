@@ -1,0 +1,36 @@
+﻿@model WebService.Models.Seller
+<!--declaração que a minha View vai ter a disposição um objeto Seller -->
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<h4>Seller</h4>
+<hr />
+<div class="row"> <!--esse row vai afzer com que meu div ocupe a largura da tela -->
+    <div class="col-md-4">  <!--para ocupação e um terço da tela, pq o bootstrap divide a tela em 12 partes-->
+        <form asp-action="Create"> <!--quando for enviado o formulário, seja chamada a ação Create-->
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label> <!--asp for é para definir o label que vai aparecer na caixinha para você digitar-->
+                <input asp-for="Name" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label> 
+                <input asp-for="Email" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="BirthDate" class="control-label"></label>
+                <input asp-for="BirthDate" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="BaseSalary" class="control-label"></label>
+                <input asp-for="BaseSalary" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+
+        </form>
+    </div>
+</div>
