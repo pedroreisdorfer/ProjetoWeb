@@ -12,6 +12,7 @@ namespace WebService.Models
         public DateTime BirthDate { get; set; }
         public double BaseSalary { get; set; }
         public Department Department { get; set; } //pq lá no esquema do programa diz que o seller possui 1 Departamento //
+        public int DepartmentId { get; set; } // assim estamos avisando ao Entity Framework que esse Id vai ter q existir, uma vez que o tipo int não pode ser nulo. No caso quando for criado um novo seller lá no site //
         public ICollection<SalesRecord> Sales { get; set; } = new List<SalesRecord>(); // associação Sales com SalesRecord igual o esquema do programa //
     
         public Seller()

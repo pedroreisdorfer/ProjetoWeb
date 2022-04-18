@@ -24,6 +24,7 @@ namespace WebService.Services
 
         public void Insert(Seller obj) // método para inserir um novo vendedor no banco de dados //
         {
+            obj.Department = _conetext.Department.First(); //pega o primeiro department e associa com meu vendedor criado //
             _conetext.Add(obj);
             _conetext.SaveChanges();
         }
