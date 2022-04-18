@@ -40,5 +40,30 @@ namespace WebService.Controllers
             _sellerService.Insert(seller);
             return RedirectToAction(nameof(Index)); // redirecionar minha requisição para a ação Index
         }
+
+        public IActionResult Delete(int? id) // o int é opcional, por isso o ponto de interrogação //
+        {
+            if(id == null)
+            {
+                return NotFound(); // se o id foi nulo, siginifica que a requisição foi feita de uma forma indevida
+            }
+
+            var obj = _sellerService.FindById(id.Value); // quem é o objeto que to mandando deletar. FindById busca no banco de dados. .Value pq o int é opcional //
+            if (obj == null)
+            {
+                return NotFound();
+
+            }
+
+            return View(obj);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int id)
+        {
+            _sellerService.Remove(id);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

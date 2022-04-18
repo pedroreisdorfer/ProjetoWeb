@@ -20,5 +20,10 @@ namespace WebService.Services
         {
             return _conetext.Department.OrderBy(x => x.Name).ToList();
         }
+
+        internal void Remove(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
