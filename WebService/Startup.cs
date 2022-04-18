@@ -43,6 +43,7 @@ namespace WebService
 
             services.AddScoped<SeedingService>(); //registra nosso serviço no gestor de injeção de dependência da nossa aplicação //
             services.AddScoped<SellerService>(); // agora essa classe pode ser injetada em outras classes //
+            services.AddScoped<DepartmentService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

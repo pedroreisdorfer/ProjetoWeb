@@ -5,16 +5,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebService.Models;
 using WebService.Services;
+using WebService.Models.ViewModels;
 
 namespace WebService.Controllers
 {
     public class SellersController : Controller
     {
         private readonly SellerService _sellerService; // criada dependência para o SellerService //
+        private readonly DepartmentService _departmentService; // criando dependência para DepartmentService
         
-        public SellersController(SellerService sellerService) // construtor para injeção de dependência //
+        public SellersController(SellerService sellerService, DepartmentService departmentService) // construtor para injeção de dependência //
         {
             _sellerService = sellerService;
+            _departmentService = departmentService;
         }
 
         public IActionResult Index() //index da pasta sellers da pasta Views //
@@ -23,9 +26,11 @@ namespace WebService.Controllers
             return View(list); // passo então essa lista como argumento no método View, gerando um IActionresult contendo essa lista
         }
 
-        public IActionResult Create() // criando a ação chamada create
+        public IActionResult Create() // criando a ação chamada create. Método que abre formulário para cadastro do vendedor //
         {
-            return View();
+            var departments = _departmentService.FindAll(); // busca no banco de dados os departamentos //
+            var viewModel = new SellerFormViewModel { Departments = departments };
+            return View(viewModel);
         }
 
         [HttpPost]
