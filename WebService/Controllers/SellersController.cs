@@ -39,6 +39,15 @@ namespace WebService.Controllers
         [ValidateAntiForgeryToken] // para prevenir que a aplicação sofra ataques CSFS: é quando alguém aproveita sua sessão de autenticação e envia dados maliciosos, aproveitando sua atenticação 
         public IActionResult Create(Seller seller) // para inserir no banco de dados
         {
+         
+            if(!ModelState.IsValid) // para testar se o seller de Seller é válido ou não. NO caso, se o model foi validado //
+            {
+                var departments = _departmentService.FindAll();
+                var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
+                return View(viewModel);
+            }
+            // no caso se não for validado, retorna meu objeto seller. E isso vai ser feito até o usuário preencher certinho o formulário //
+
             _sellerService.Insert(seller);
             return RedirectToAction(nameof(Index)); // redirecionar minha requisição para a ação Index
         }
@@ -108,7 +117,14 @@ namespace WebService.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Seller seller)
         {
-            if(id != seller.Id)
+            if (!ModelState.IsValid) // para testar se o seller de Seller é válido ou não. NO caso, se o model foi validado //
+            {
+                var departments = _departmentService.FindAll();
+                var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
+                return View(viewModel);
+            }
+            
+            if (id != seller.Id)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id mismatch" });
             }
