@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using WebService.Data;
 using WebService.Models;
 
-namespace WebService.Controllers
+namespace WebService.Controllers // tudo nessa classe foi criado  automaticamente com o New Scaffolding Item //
 {
     public class DepartmentsController : Controller // já vem com a classe Controller como prinicipal //
     {
-        private readonly WebServiceContext _context; // Controller já vem com dependencia da classes WebServiceContext, que é a classe personalizada do DbContext do Entity Framework
+        private readonly WebServiceContext _context; // Controller já vem com dependencia da classe WebServiceContext, que é a classe personalizada do DbContext do Entity Framework
 
         public DepartmentsController(WebServiceContext context) // construtor para injeção de dependencia //
         {

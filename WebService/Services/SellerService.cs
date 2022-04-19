@@ -15,7 +15,7 @@ namespace WebService.Services
 
         public SellerService(WebServiceContext context) // construtor para que injeção de dependência possa ocorrer //
         {
-            _context = context;
+            _context = context; //ou seja, agora quando for usar SellerService, é necessário chamar  _context, que irá administrar os objetos com o banco de dados //
         }
 
         public List<Seller> FindAll()
@@ -26,19 +26,19 @@ namespace WebService.Services
 
         public void Insert(Seller obj) // método para inserir um novo vendedor no banco de dados //
         {
-            _context.Add(obj);
+            _context.Add(obj); // acessa banco de dados com _context e adiciona o objeto.
             _context.SaveChanges();
         }
 
-        public Seller FindById(int id)
+        public Seller FindById(int id) // retorna o vendedor de possui esse id
         {
             return _context.Seller.Include(obj => obj.Department).FirstOrDefault(obj => obj.Id == id); // include precisa ser com using Microsoft.EntityFrameworkCore; // faz  join e busca o departamento //
-        }
+        } // no Include a gente coloca o que queremos incluir através de uma expressão lambda. Com isso, aparece nome Department lá em Details do site //
 
         public void Remove(int id)
         {
             var obj = _context.Seller.Find(id);
-            _context.Seller.Remove(obj);
+            _context.Seller.Remove(obj); // removo o obj do DbSet.
             _context.SaveChanges(); // para o Entity Framework efetivar a alteração lá no banco de dados //
         }
 

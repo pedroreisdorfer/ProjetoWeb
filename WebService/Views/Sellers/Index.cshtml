@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<WebService.Models.Seller>
-    <!--obtendo dados da View e mosntrando list na tela  */-->
-<!--esse objeto model vai corresponder ao objeto passado como arguento no View de SellersController. No caso, é uma lista de seller-->
-
+    <!--obtendo dados da View e mostrando list na tela  */-->
+<!--esse objeto model vai corresponder ao objeto passado como arguento no View de SellersController, a list dentro do parênteses da View. No caso, é uma lista de seller-->
+<!-- coleção genérica IEnumerable  que rebece uma lista de Seller -->
 @{
     ViewData["Title"] = "Sellers";
 }
@@ -10,7 +10,7 @@
 
 <p>
     <a asp-action="Create" class="btn btn-default">Create New</a>
-    <!--nome da ação é create, btn que é a criaçãod e um botão e um btn-default para ficar estilizado colorido-->
+    <!--nome da ação é create, btn que é a criação de um botão e um btn-default para ficar estilizado colorido-->
 </p>
 
 <table class="table table-striped table-hover">
@@ -20,7 +20,7 @@
             <!--para ser a linha do cabeçalho e depois uma class ali para mudar a cor do cabeçalho para verde -->
             <th>
                 <!--primeira coluna do cabeçalho -->
-                @Html.DisplayNameFor(model => model.Name) <!--pra renderiza o nome da class Seller, uso o recurso esse recurso do Framework-->
+                @Html.DisplayNameFor(model => model.Name) <!--pra renderizar o Name da class Seller, se usa DISPLAYNAMEFOR, recurso do Framework-->
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Email)
@@ -37,9 +37,9 @@
     <tbody>
         
         @foreach (var item in Model)
-        {
-            <tr>
-                <td>
+        { <!-- ese MODEL é o model que está lá no início da nossa View-->
+            <tr><!--LINHA-->
+                <td> <!--COLUNA-->
                     @Html.DisplayFor(modelItem => item.Name) <!--para criação do conteúdo de cada coluna baseado no item de foreach-->
                 </td>
                 <td>
@@ -52,7 +52,7 @@
                     @Html.DisplayFor(modelItem => item.BaseSalary)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> <!--edit no final é o nome que fica lá no site-->
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> <!--edit no final é o nome que fica lá no site. Busca pelo Id, pq tem um Id para cada item e ele não é igual. No caso, cada seller tem um Id diferente-->
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a>
                     <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>

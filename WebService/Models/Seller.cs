@@ -41,7 +41,7 @@ namespace WebService.Models
 
         public double TotalSales(DateTime initial, DateTime final)
         {
-            return Sales.Where(sr => sr.Date >= initial && sr.Date <= final).Sum(sr => sr.Amount); // calculo total de vendas de um vendedor em um determinado intervalod e datas //
+            return Sales.Where(sr => sr.Date >= initial && sr.Date <= final).Sum(sr => sr.Amount); // cálculo total de vendas de um vendedor em um determinado intervalod e datas //
         }
     }
 }

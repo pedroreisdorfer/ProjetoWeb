@@ -7,6 +7,7 @@ using WebService.Models;
 using WebService.Services;
 using WebService.Models.ViewModels;
 using WebService.Services.Exceptions;
+using System.Diagnostics;
 
 namespace WebService.Controllers
 {
@@ -25,17 +26,17 @@ namespace WebService.Controllers
         {
             var list = _sellerService.FindAll(); // operação que retorna lista de seller. Lista criada em SellerService //
             return View(list); // passo então essa lista como argumento no método View, gerando um IActionresult contendo essa lista
-        }
+        } // resumo: eu chamei o controlador, o controlador acessou o meu Models, pegou dadona lista e vai encaminhar esses dados para a minha View
 
         public IActionResult Create() // criando a ação chamada create. Método que abre formulário para cadastro do vendedor //
         {
             var departments = _departmentService.FindAll(); // busca no banco de dados os departamentos //
             var viewModel = new SellerFormViewModel { Departments = departments };
             return View(viewModel);
-        }
+        } 
 
         [HttpPost]
-        [ValidateAntiForgeryToken] // para prevenir que a aplicação sofra ataques CSFS: équando alguém aproveita sua sessão de autenticação e envia dados maliciosos, aproveitando sua atenticação 
+        [ValidateAntiForgeryToken] // para prevenir que a aplicação sofra ataques CSFS: é quando alguém aproveita sua sessão de autenticação e envia dados maliciosos, aproveitando sua atenticação 
         public IActionResult Create(Seller seller) // para inserir no banco de dados
         {
             _sellerService.Insert(seller);
@@ -46,13 +47,13 @@ namespace WebService.Controllers
         {
             if(id == null)
             {
-                return NotFound(); // se o id foi nulo, siginifica que a requisição foi feita de uma forma indevida
-            }
+                return RedirectToAction(nameof(Error), new { message = "Id not provided" }); // assim eu redireciono para a minha pagina de erro
+            }          // para qual ação nós vamos redirecionar? para a Error, ai vai nameof antes. Essa ação Error recebe como argumento, que é a mensagem. Para passar tal argumento, foi instanciado um objeto anônimo //
 
             var obj = _sellerService.FindById(id.Value); // quem é o objeto que to mandando deletar. FindById busca no banco de dados. .Value pq o int é opcional //
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id not found" });
 
             }
 
@@ -71,13 +72,13 @@ namespace WebService.Controllers
         {
             if (id == null)
             {
-                return NotFound(); 
+                return RedirectToAction(nameof(Error), new { message = "Id not provided" });
             }
 
             var obj = _sellerService.FindById(id.Value); 
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id not found" });
 
             }
 
@@ -88,13 +89,13 @@ namespace WebService.Controllers
         {
             if(id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id not provided" });
             }
 
             var obj = _sellerService.FindById(id.Value);
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id not found" });
             }
 
             // para abrir minha tela de edição, preciso carregar os departamentos para povoar minha caixinha de seleção
@@ -109,21 +110,28 @@ namespace WebService.Controllers
         {
             if(id != seller.Id)
             {
-                return BadRequest();
+                return RedirectToAction(nameof(Error), new { message = "Id mismatch" });
             }
             try
             {
                 _sellerService.UpDate(seller);
                 return RedirectToAction(nameof(Index));
             }
-            catch(NotFoundException)
+            catch(ApplicationException e)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = e.Message}); // e.Message pq aqui se trata dê uma exceção
             }
-            catch (DbConcurrencyException)
-            {
-                return BadRequest();
-            }
+           
         }
+
+        public IActionResult Error(string message)
+        {
+            var viewModel = new ErrorViewModel
+            {
+                Message = message,
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier // aqui foi feito um macete no Entity Framework para pegar o Id interno da Requisição //
+            }; // criação do objeto viewModel
+            return View(viewModel);
+        } 
     }
 }
