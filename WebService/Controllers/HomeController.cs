@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebService.Models;
 using WebService.Models.ViewModels;
+using ErrorViewModel = WebService.Models.ViewModels.ErrorViewModel;
 
 namespace WebService.Controllers
 {

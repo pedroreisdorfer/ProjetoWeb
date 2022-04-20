@@ -37,9 +37,16 @@ namespace WebService.Services
 
         public async Task RemoveAsync(int id)
         {
-            var obj = await _context.Seller.FindAsync(id);
-            _context.Seller.Remove(obj); // removo o obj do DbSet.
-            await _context.SaveChangesAsync(); // para o Entity Framework efetivar a alteração lá no banco de dados //
+            try
+            {
+                var obj = await _context.Seller.FindAsync(id);
+                _context.Seller.Remove(obj); // removo o obj do DbSet.
+                await _context.SaveChangesAsync(); // para o Entity Framework efetivar a alteração lá no banco de dados //
+            }
+            catch(DbUpdateException e) // captura uma possível DbUpdateException
+            {
+                throw new IntegrityException("Can't delete seller because he/she has sales"); // ou deixar a padrão e colocar e.Message
+            } // quando a exceção DbUpdateException acontecer, nós vamos lançar uma nova exceção, que é a nossa exceção de serviço IntegrityException
         }
 
         public async Task UpDateAsync(Seller obj) // atualizando objeto do tipo Seller
