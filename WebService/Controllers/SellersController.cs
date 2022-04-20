@@ -8,6 +8,7 @@ using WebService.Services;
 using WebService.Models.ViewModels;
 using WebService.Services.Exceptions;
 using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebService.Controllers
 {
@@ -22,44 +23,44 @@ namespace WebService.Controllers
             _departmentService = departmentService;
         }
 
-        public IActionResult Index() //index da pasta sellers da pasta Views //
+        public async Task<IActionResult> Index() //index da pasta sellers da pasta Views // para mudar para assíncrono, necessário o async Task<>
         {
-            var list = _sellerService.FindAll(); // operação que retorna lista de seller. Lista criada em SellerService //
+            var list = await _sellerService.FindAllAsync(); // operação que retorna lista de seller. Lista criada em SellerService //
             return View(list); // passo então essa lista como argumento no método View, gerando um IActionresult contendo essa lista
         } // resumo: eu chamei o controlador, o controlador acessou o meu Models, pegou dadona lista e vai encaminhar esses dados para a minha View
 
-        public IActionResult Create() // criando a ação chamada create. Método que abre formulário para cadastro do vendedor //
+        public async Task<IActionResult> Createasync() // criando a ação chamada create. Método que abre formulário para cadastro do vendedor //
         {
-            var departments = _departmentService.FindAll(); // busca no banco de dados os departamentos //
+            var departments = await _departmentService.FindAllAsync(); // busca no banco de dados os departamentos //
             var viewModel = new SellerFormViewModel { Departments = departments };
             return View(viewModel);
         } 
 
         [HttpPost]
         [ValidateAntiForgeryToken] // para prevenir que a aplicação sofra ataques CSFS: é quando alguém aproveita sua sessão de autenticação e envia dados maliciosos, aproveitando sua atenticação 
-        public IActionResult Create(Seller seller) // para inserir no banco de dados
+        public async Task<IActionResult> Createasync(Seller seller) // para inserir no banco de dados
         {
          
             if(!ModelState.IsValid) // para testar se o seller de Seller é válido ou não. NO caso, se o model foi validado //
             {
-                var departments = _departmentService.FindAll();
+                var departments = await _departmentService.FindAllAsync();
                 var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
                 return View(viewModel);
             }
             // no caso se não for validado, retorna meu objeto seller. E isso vai ser feito até o usuário preencher certinho o formulário //
 
-            _sellerService.Insert(seller);
+            await _sellerService.InsertAsync(seller);
             return RedirectToAction(nameof(Index)); // redirecionar minha requisição para a ação Index
         }
 
-        public IActionResult Delete(int? id) // o int é opcional, por isso o ponto de interrogação //
+        public async Task<IActionResult> Deleteasync(int? id) // o int é opcional, por isso o ponto de interrogação //
         {
             if(id == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id not provided" }); // assim eu redireciono para a minha pagina de erro
             }          // para qual ação nós vamos redirecionar? para a Error, ai vai nameof antes. Essa ação Error recebe como argumento, que é a mensagem. Para passar tal argumento, foi instanciado um objeto anônimo //
 
-            var obj = _sellerService.FindById(id.Value); // quem é o objeto que to mandando deletar. FindById busca no banco de dados. .Value pq o int é opcional //
+            var obj = await _sellerService.FindByIdAsync(id.Value); // quem é o objeto que to mandando deletar. FindById busca no banco de dados. .Value pq o int é opcional //
             if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id not found" });
@@ -71,20 +72,20 @@ namespace WebService.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Deleteasync(int id)
         {
-            _sellerService.Remove(id);
+            await _sellerService.RemoveAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Details(int? id)
+        public async Task<IActionResult> Detailsasync(int? id)
         {
             if (id == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id not provided" });
             }
 
-            var obj = _sellerService.FindById(id.Value); 
+            var obj = await _sellerService.FindByIdAsync(id.Value); 
             if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id not found" });
@@ -94,32 +95,32 @@ namespace WebService.Controllers
             return View(obj);
         }
 
-        public IActionResult Edit(int? id) // abre a tela para editar o nosso vendedor//
+        public async Task<IActionResult> Editasync(int? id) // abre a tela para editar o nosso vendedor//
         {
             if(id == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id not provided" });
             }
 
-            var obj = _sellerService.FindById(id.Value);
+            var obj = await _sellerService.FindByIdAsync(id.Value);
             if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id not found" });
             }
 
             // para abrir minha tela de edição, preciso carregar os departamentos para povoar minha caixinha de seleção
-            List<Department> departments = _departmentService.FindAll();
+            List<Department> departments = await _departmentService.FindAllAsync();
             SellerFormViewModel viewModel = new SellerFormViewModel { Seller = obj, Departments = departments };
             return View(viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Seller seller)
+        public async Task<IActionResult> Editasync(int id, Seller seller)
         {
             if (!ModelState.IsValid) // para testar se o seller de Seller é válido ou não. NO caso, se o model foi validado //
             {
-                var departments = _departmentService.FindAll();
+                var departments = await _departmentService.FindAllAsync();
                 var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
                 return View(viewModel);
             }
@@ -130,7 +131,7 @@ namespace WebService.Controllers
             }
             try
             {
-                _sellerService.UpDate(seller);
+                await _sellerService.UpDateAsync(seller);
                 return RedirectToAction(nameof(Index));
             }
             catch(ApplicationException e)
@@ -140,7 +141,7 @@ namespace WebService.Controllers
            
         }
 
-        public IActionResult Error(string message)
+        public IActionResult Error(string message) // essa operação não precisa ser assíncrona, pq não tem nenhum acesso a dados //
         {
             var viewModel = new ErrorViewModel
             {

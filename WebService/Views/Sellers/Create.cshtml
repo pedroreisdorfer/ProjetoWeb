@@ -37,8 +37,8 @@
             </div>
             <div class="form-group">
                 <label asp-for="Seller.DepartmentId" class="control-label"></label>
-                <select asp-for="Seller.DepartmentId" asp-items="@(new SelectList(Model.Departments,"Id", // select é a caixinha de seleção do HTML //
-                "Name"))" class="form-control"></select> <!--O ASP ITEMS constroi os items da caixinha de seleção com base numa coleção que vc passar. O SelectList vai ter três argumentos: O primeiro argumento é a fonte de dados da coleção, segundo atributo é a chave, terceiro é qual atributo desse objeto que vai aparecer na caixinha // -->
+                <select asp-for="Seller.DepartmentId" asp-items="@(new SelectList(Model.Departments,"Id","Name"))" class="form-control"></select> <!--select é a caixinha de seleção do HTML -->
+                <!--O ASP ITEMS constroi os items da caixinha de seleção com base numa coleção que vc passar. O SelectList vai ter três argumentos: O primeiro argumento é a fonte de dados da coleção, segundo atributo é a chave, terceiro é qual atributo desse objeto que vai aparecer na caixinha // -->
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />
@@ -47,6 +47,7 @@
         </form>
     </div>
 </div>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
