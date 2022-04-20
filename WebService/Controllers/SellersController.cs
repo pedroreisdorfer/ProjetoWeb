@@ -2,13 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using WebService.Models;
 using WebService.Services;
 using WebService.Models.ViewModels;
 using WebService.Services.Exceptions;
 using System.Diagnostics;
-using Microsoft.EntityFrameworkCore;
+
+
 
 namespace WebService.Controllers
 {
@@ -29,7 +31,7 @@ namespace WebService.Controllers
             return View(list); // passo então essa lista como argumento no método View, gerando um IActionresult contendo essa lista
         } // resumo: eu chamei o controlador, o controlador acessou o meu Models, pegou dadona lista e vai encaminhar esses dados para a minha View
 
-        public async Task<IActionResult> Createasync() // criando a ação chamada create. Método que abre formulário para cadastro do vendedor //
+        public async Task<IActionResult> Create() // criando a ação chamada create. Método que abre formulário para cadastro do vendedor //
         {
             var departments = await _departmentService.FindAllAsync(); // busca no banco de dados os departamentos //
             var viewModel = new SellerFormViewModel { Departments = departments };
@@ -38,7 +40,7 @@ namespace WebService.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken] // para prevenir que a aplicação sofra ataques CSFS: é quando alguém aproveita sua sessão de autenticação e envia dados maliciosos, aproveitando sua atenticação 
-        public async Task<IActionResult> Createasync(Seller seller) // para inserir no banco de dados
+        public async Task<IActionResult> Create(Seller seller) // para inserir no banco de dados
         {
          
             if(!ModelState.IsValid) // para testar se o seller de Seller é válido ou não. NO caso, se o model foi validado //
@@ -53,7 +55,7 @@ namespace WebService.Controllers
             return RedirectToAction(nameof(Index)); // redirecionar minha requisição para a ação Index
         }
 
-        public async Task<IActionResult> Deleteasync(int? id) // o int é opcional, por isso o ponto de interrogação //
+        public async Task<IActionResult> Delete(int? id) // o int é opcional, por isso o ponto de interrogação //
         {
             if(id == null)
             {
@@ -72,13 +74,13 @@ namespace WebService.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Deleteasync(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             await _sellerService.RemoveAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> Detailsasync(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -95,7 +97,7 @@ namespace WebService.Controllers
             return View(obj);
         }
 
-        public async Task<IActionResult> Editasync(int? id) // abre a tela para editar o nosso vendedor//
+        public async Task<IActionResult> Edit(int? id) // abre a tela para editar o nosso vendedor//
         {
             if(id == null)
             {
@@ -116,7 +118,7 @@ namespace WebService.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Editasync(int id, Seller seller)
+        public async Task<IActionResult> Edit(int id, Seller seller)
         {
             if (!ModelState.IsValid) // para testar se o seller de Seller é válido ou não. NO caso, se o model foi validado //
             {
