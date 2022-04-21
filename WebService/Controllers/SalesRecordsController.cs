@@ -37,9 +37,20 @@ namespace WebService.Controllers
             return View(result);
         }
 
-        public IActionResult GroupingSearch()
+        public async Task<IActionResult> GroupingSearch(DateTime? minDate, DateTime? maxDate)
         {
-            return View();
+            if (!minDate.HasValue) // teste se minha data mínima possui um valor.No caso, "Se não possuir um valor mínimo:
+            {
+                minDate = new DateTime(DateTime.Now.Year, 1, 1); // recebe uma data, qual? dia primeiro de janeiro do ano atual
+            }
+            if (!maxDate.HasValue)
+            {
+                maxDate = DateTime.Now;
+            }
+            ViewData["minDate"] = minDate.Value.ToString("yyyy-MM-dd"); // passando esses dados para minha View por meio da ViewData
+            ViewData["maxDate"] = maxDate.Value.ToString("yyyy-MM-dd");
+            var result = await _salesRecordService.FindByDateGroupingAsync(minDate, maxDate);
+            return View(result);
         }
     }
 }

@@ -1,8 +1,75 @@
-﻿
+﻿@model IEnumerable<IGrouping<Department, SalesRecord>>
+<!-- essa listinha de agrupamentos é baseado nos departamentos. Para cada departamento, eu ou ter vários SalesRecords. A quantidade de elementos dessa listinha é a quantidade de departamentos-->
 @{
     ViewData["Title"] = "Grouping Search";
-}
+    DateTime minDate = DateTime.Parse(ViewData["minDate"] as string);  
+    DateTime maxDate = DateTime.Parse(ViewData["maxDate"] as string);
+} <!--declaração de duas variáveis. Eu pego o minDate enviado pelo controlador, faço um casting dele para string e então crio uma data a partir dele-->
 
 <h2>@ViewData["Title"]</h2>
 
-*
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <form class="navbar-form navbar-left" role="search"> <!-- barrinha de busca, que vai permitir ajustar as datas, ali no view data-->
+            <div class="form-group">
+                <div class="form-group">
+                    <label for="minDate">Min Date</label>
+                    <input type="date" class="form-control" name="minDate" value=@ViewData["minDate"]>
+                </div>
+                <div class="form-group">
+                    <label for="maxDate">Max Date</label>
+                    <input type="date" class="form-control" name="maxDate" value=@ViewData["maxDate"]>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </form>
+    </div>
+</nav>
+
+@foreach (var departmentGroup in Model) // esse primeiro foreach percorre cada departamento
+{
+    <div class="panel panel-primary"> <!-- pra cada departamento eu vou criar um painel-->
+        <div class="panel-heading">
+            <h3 class="panel-title">Department @departmentGroup.Key.Name, Total sales = @departmentGroup.Key.TotalSales(minDate, maxDate).ToString("F2")</h3>
+        </div>                      <!--no começo de cada painel, eu vou mostrar um sumário. Department tal: esse tal vai ser o nome do departamento, que é acessado pela chave em departmentGroup. Ai depois eu fazer total de vendas desse departamento: chamo o departamento e depois a operação TotalSales que faz parte lá do Department de Models -->
+        <div class="panel-body">
+            <table class="table table-striped table-hover"> <!-- dentro desse painel,  eu vou ter uma tabela de vendas-->
+                <thead>
+                    <tr class="success">
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            Amount
+                        </th>
+                        <th>
+                            Seller
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in departmentGroup) // esse outro foreach é para percorrer as vendas de cada departamento(ITEM É UM DEPARTAMENTO DA LISTA DE DEPARTAMENTOS e preencher cada linha da tabela criada: Date, Amount, Seller, Status
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Amount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Seller.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
